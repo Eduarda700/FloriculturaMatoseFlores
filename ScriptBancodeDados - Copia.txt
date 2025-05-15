@@ -19,7 +19,7 @@ idfornecedor integer primary key auto_increment,
 fornecedor varchar(200) not null,
 email varchar(320) not null,
 telefone varchar (20) not null,
-endereco_fornecedor integer (500) not null
+endereco_fornecedor varchar (500) not null
 
 );
 
@@ -50,7 +50,7 @@ usuario_cliente varchar(200) not null,
 senha varchar(12) not null,
 email varchar(320) not null,
 telefone varchar(20) not null,
-endereco_cliente (500) not null
+endereco_cliente varchar(500) not null
 
 
 );
