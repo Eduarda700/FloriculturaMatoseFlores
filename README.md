@@ -1,1 +1,102 @@
 # FloriculturaMatoseFlores
+
+
+CREATE DATABASE floricultura;
+
+USE floricultura;
+
+
+
+CREATE TABLE IF NOT EXISTS usuario_funcionario(
+idusuario integer primary key auto_increment,
+usuario varchar(200) not null,
+senha varchar(12) not null
+
+);
+
+
+
+CREATE TABLE IF NOT EXISTS fornecedor(
+idfornecedor integer primary key auto_increment,
+fornecedor varchar(200) not null,
+email varchar(320) not null,
+telefone varchar (20) not null,
+endereco_fornecedor varchar (500) not null
+
+);
+
+
+CREATE TABLE IF NOT EXISTS usuario_proprietario(
+idusuario_proprietario integer primary key auto_increment,
+usuario varchar(200) not null,
+senha varchar(12) not null
+
+);
+
+
+CREATE TABLE IF NOT EXISTS dicas_plantio(
+iddicas integer primary key auto_increment, 
+titulo varchar(200) not null,
+dicas text,
+idusuario_proprietario integer ,
+idusuario_funcionario integer,
+FOREIGN KEY (idusuario_proprietario) REFERENCES usuario_proprietario (idusuario_proprietario),
+FOREIGN KEY (idusuario_funcionario) REFERENCES usuario_funcionario (idusuario)
+
+);
+
+
+CREATE TABLE IF NOT EXISTS usuario_cliente(
+idcliente integer primary key auto_increment,
+usuario_cliente varchar(200) not null,
+senha varchar(12) not null,
+email varchar(320) not null,
+telefone varchar(20) not null,
+endereco_cliente varchar (500) not null
+
+
+);
+
+
+
+CREATE TABLE IF NOT EXISTS modo_de_pagamento(
+idmodo_de_pagamento integer primary key auto_increment,
+pix varchar(200) not null,
+cartao varchar (30) not null,
+dinheiro varchar (100) not null
+
+);
+
+CREATE TABLE IF NOT EXISTS produto(
+idproduto integer primary key auto_increment,
+produto varchar(200) not null,
+descricao_produto varchar(500) not null,
+quantidade varchar(10) not null,
+valor_produto varchar(10) not null,
+idfornecedor integer,
+FOREIGN KEY (idfornecedor) REFERENCES fornecedor (idfornecedor)
+
+
+);
+
+
+
+CREATE TABLE IF NOT EXISTS compra(
+idcompras integer primary key auto_increment,
+idusuario_cliente integer,
+idusuario_proprietario integer,
+idusuario_funcionario integer,
+idproduto integer,
+idmodo_de_pagamento integer,
+FOREIGN KEY (idusuario_cliente) REFERENCES usuario_cliente (idcliente),
+FOREIGN KEY (idusuario_proprietario) REFERENCES usuario_proprietario (idusuario_proprietario),
+FOREIGN KEY (idusuario_funcionario) REFERENCES usuario_funcionario (idusuario),
+FOREIGN KEY (idproduto) REFERENCES produto (idproduto),
+FOREIGN KEY (idmodo_de_pagamento) REFERENCES modo_de_pagamento (idmodo_de_pagamento)
+
+);
+
+
+
+
+
