@@ -6,54 +6,73 @@ USE floricultura;
 
 
 CREATE TABLE IF NOT EXISTS usuario_funcionario(
-idusuario integer primary key auto_increment,
-usuario varchar(200) not null,
-senha varchar(12) not null
+idusuario_funcionario integer primary key auto_increment,
+email_funcionario varchar(320) not null,
+nome_funcionario varchar(200) not null,
+senha_funcionario varchar(12) not null
 
 );
 
+CREATE TABLE IF NOT EXISTS usuario_proprietaria(
+idusuario_proprietaria integer primary key auto_increment,
+email_proprietaria varchar (320) not null,
+nome_proprietaria varchar(200) not null,
+senha_proprietaria varchar(12) not null
 
+);
+
+CREATE TABLE IF NOT EXISTS dicas_plantio(
+iddica_plantio integer primary key auto_increment, 
+titulo_dica varchar(200) not null,
+conteudo_dica text,
+idusuario_proprietaria integer ,
+idusuario_funcionario integer,
+FOREIGN KEY (idusuario_proprietaria) REFERENCES usuario_proprietaria (idusuario_proprietaria),
+FOREIGN KEY (idusuario_funcionario) REFERENCES usuario_funcionario (idusuario_funcionario)
+
+);
 
 CREATE TABLE IF NOT EXISTS fornecedor(
 idfornecedor integer primary key auto_increment,
 fornecedor varchar(200) not null,
 email varchar(320) not null,
 telefone varchar (20) not null,
-endereco_fornecedor varchar (500) not null
+email_fornecedor varchar (320) not null,
+cnpj_fornecedor varchar(25) not null,
+rua_fornecedor varchar (200) not null,
+numero_fornecedor varchar (10) not null,
+complemento_fornecedor varchar (10),
+bairro_fornecedor varchar (100) not null,
+cidade_fornecedor varchar (100) not null,
+estado_fornecedor varchar (100) not null,
+cep_cliente int (9) not null
 
 );
-
-
-CREATE TABLE IF NOT EXISTS usuario_proprietario(
-idusuario_proprietario integer primary key auto_increment,
-usuario varchar(200) not null,
-senha varchar(12) not null
-
-);
-
-
-CREATE TABLE IF NOT EXISTS dicas_plantio(
-iddicas integer primary key auto_increment, 
-titulo varchar(200) not null,
-dicas text,
-idusuario_proprietario integer ,
-idusuario_funcionario integer,
-FOREIGN KEY (idusuario_proprietario) REFERENCES usuario_proprietario (idusuario_proprietario),
-FOREIGN KEY (idusuario_funcionario) REFERENCES usuario_funcionario (idusuario)
-
-);
-
 
 CREATE TABLE IF NOT EXISTS usuario_cliente(
-idcliente integer primary key auto_increment,
-usuario_cliente varchar(200) not null,
-senha varchar(12) not null,
-email varchar(320) not null,
-telefone varchar(20) not null,
-endereco_cliente varchar(500) not null
+idusuario_cliente integer primary key auto_increment,
+nome_cliente varchar (200) not null,
+senha_cliente varchar(12) not null,
+email_cliente varchar(320) not null,
+telefone_cliente varchar(20) not null,
+cpf_cliente varchar(20) not null,
+data_nascimento date not null,
+cep_cliente int (9) not null,
+rua_cliente varchar (200) not null,
+numero_cliente varchar (10) not null,
+complemento_cliente varchar (10),
+bairro_cliente varchar (100) not null,
+cidade_cliente varchar (100) not null,
+estado_cliente varchar (100) not null
+
 
 
 );
+
+insert 
+USE floricultura;
+INSERT INTO  usuario_cliente
+VALUES ( 1,"Giovanni","123","exemplo@gmail.com","149912345678","123456789","2000/01/01","180123123","rua bla","56","apt A","villa bla","botucatu","SP");
 
 
 
@@ -67,9 +86,10 @@ dinheiro varchar (100) not null
 
 CREATE TABLE IF NOT EXISTS produto(
 idproduto integer primary key auto_increment,
-produto varchar(200) not null,
-descricao_produto varchar(500) not null,
-quantidade varchar(10) not null,
+nome_produto varchar(200) not null,
+cod_produto varchar (45) not null,
+descricao_produto text,
+quantidade_produto int (4) not null,
 valor_produto varchar(10) not null,
 idfornecedor integer,
 FOREIGN KEY (idfornecedor) REFERENCES fornecedor (idfornecedor)
@@ -79,20 +99,49 @@ FOREIGN KEY (idfornecedor) REFERENCES fornecedor (idfornecedor)
 
 
 
-CREATE TABLE IF NOT EXISTS compra(
-idcompras integer primary key auto_increment,
-idusuario_cliente integer,
-idusuario_proprietario integer,
-idusuario_funcionario integer,
-idproduto integer,
+CREATE TABLE IF NOT EXISTS venda(
+idvenda integer primary key auto_increment,
+data_venda date not null,
 idmodo_de_pagamento integer,
-FOREIGN KEY (idusuario_cliente) REFERENCES usuario_cliente (idcliente),
-FOREIGN KEY (idusuario_proprietario) REFERENCES usuario_proprietario (idusuario_proprietario),
-FOREIGN KEY (idusuario_funcionario) REFERENCES usuario_funcionario (idusuario),
+idproduto integer,
+idusuario_funcionario integer,
+idusuario_proprietaria integer,
+idusuario_cliente integer,
+FOREIGN KEY (idmodo_de_pagamento) REFERENCES modo_de_pagamento (idmodo_de_pagamento),
 FOREIGN KEY (idproduto) REFERENCES produto (idproduto),
-FOREIGN KEY (idmodo_de_pagamento) REFERENCES modo_de_pagamento (idmodo_de_pagamento)
+FOREIGN KEY (idusuario_funcionario) REFERENCES usuario_funcionario (idusuario_funcionario),
+FOREIGN KEY (idusuario_proprietaria) REFERENCES usuario_proprietaria (idusuario_proprietaria),
+FOREIGN KEY (idusuario_cliente) REFERENCES usuario_cliente (idusuario_cliente)
+
 
 );
+
+CREATE TABLE IF NOT EXISTS pedidos_realizados(
+idped_rea integer primary key auto_increment,
+idproduto integer,
+idfornecedor integer,
+idusuario_cliente integer,
+idvenda integer,
+FOREIGN KEY (idproduto) REFERENCES produto (idproduto),
+FOREIGN KEY (idfornecedor) REFERENCES fornecedor (idfornecedor),
+FOREIGN KEY (idusuario_cliente) REFERENCES usuario_cliente (idusuario_cliente),
+FOREIGN KEY (idvenda) REFERENCES venda (idvenda)
+
+);
+
+CREATE TABLE IF NOT EXISTS fornecedor_produto(
+idforn_produto integer primary key auto_increment,
+idproduto integer,
+idfornecedor integer,
+idvenda integer,
+FOREIGN KEY (idproduto) REFERENCES produto (idproduto),
+FOREIGN KEY (idfornecedor) REFERENCES fornecedor (idfornecedor),
+FOREIGN KEY (idvenda) REFERENCES venda (idvenda)
+
+);
+
+
+
 
 
 
