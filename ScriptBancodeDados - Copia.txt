@@ -69,10 +69,7 @@ estado_cliente varchar (100) not null
 
 );
 
-insert 
-USE floricultura;
-INSERT INTO  usuario_cliente
-VALUES ( 1,"Giovanni","123","exemplo@gmail.com","149912345678","123456789","2000/01/01","180123123","rua bla","56","apt A","villa bla","botucatu","SP");
+
 
 
 
